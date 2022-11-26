@@ -49,7 +49,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/game_LO_player"
+        android:id="@+id/game_LL_player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -88,7 +88,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp">
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/game_IMG_leftArrow"
+            android:id="@+id/game_FAB_leftArrow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -98,7 +98,7 @@
             android:rotation="180"
             app:iconSize="30dp"/>
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/game_IMG_rightArrow"
+            android:id="@+id/game_FAB_rightArrow"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -112,10 +112,11 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/game_LO_player"
+        android:layout_alignBottom="@+id/game_LL_player"
         android:layout_marginTop="75dp"
         android:orientation="horizontal">
         <LinearLayout
+            android:id="@+id/game_LL_obstacleCol1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -146,6 +147,7 @@
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/game_LL_obstacleCol2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -176,6 +178,7 @@
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/game_LL_obstacleCol3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
