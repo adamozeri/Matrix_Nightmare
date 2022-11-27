@@ -5,18 +5,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 
-public class GameActivity extends AppCompatActivity {
+import java.util.Timer;
+import java.util.TimerTask;
 
-    private FloatingActionButton game_FAB_leftArrow;
-    private FloatingActionButton game_FAB_rightArrow;
+public class GameActivity extends AppCompatActivity {
+    private Timer timer;
+    private final int DELAY = 1000;
+
+    private ExtendedFloatingActionButton game_FAB_leftArrow;
+    private ExtendedFloatingActionButton game_FAB_rightArrow;
     private LinearLayout[] game_LL_obstacleCol;
     private LinearLayout game_LL_player;
     private ShapeableImageView[] game_IMG_hearts;
 
     private GameManger gameManger;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +32,10 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         findViews();
         this.gameManger = new GameManger(game_LL_obstacleCol, new Player()
-                .setIndex(game_LL_player.getChildCount()/2+1)
+                .setCurrentPos(game_LL_player.getChildCount()/2+1)
                 .setLife(game_IMG_hearts.length)
                 .setMaxIndex(game_LL_player.getChildCount()-1));
-
+        gameManger.initObstacles();
         refreshUI();
 
         game_FAB_leftArrow.setOnClickListener(view -> {
@@ -67,7 +75,25 @@ public class GameActivity extends AppCompatActivity {
         if(gameManger.isEnded()){
 
         }
+    }
 
+
+
+
+    private void startTimer() {
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(()->{
+                    //TODO: my func
+                });
+            }
+        }, DELAY, DELAY);
+    }
+
+    private void stopTimer() {
+        timer.cancel();
     }
 
 

@@ -3,7 +3,7 @@ package com.example.android_hw1;
 public class Player {
 
     private int life;
-    private int index;
+    private int currentPos;
     private int maxIndex;
 
     public Player() {
@@ -18,12 +18,12 @@ public class Player {
         return this;
     }
 
-    public int getIndex() {
-        return index;
+    public int getCurrentPos() {
+        return currentPos;
     }
 
-    public Player setIndex(int index) {
-        this.index = index;
+    public Player setCurrentPos(int currentPos) {
+        this.currentPos = currentPos;
         return this;
     }
 
