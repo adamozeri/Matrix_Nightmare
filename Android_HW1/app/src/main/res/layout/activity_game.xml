@@ -4,10 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameActivity"
-    android:background="@color/background">
+    tools:context=".GameActivity">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/game_IMG_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
     <LinearLayout
-        android:layout_width="190dp"
+        android:layout_width="140dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
@@ -37,15 +41,6 @@
             android:layout_weight="1"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/heart" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/game_IMG_heart4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/heart" />
     </LinearLayout>
 
     <LinearLayout
@@ -60,21 +55,21 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/game_IMG_leftPlayer"
             android:layout_width="0dp"
-            android:layout_height="75dp"
+            android:layout_height="100dp"
             app:srcCompat="@drawable/new_kid"
             android:scaleType="fitCenter"
             android:layout_weight="1"/>
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/game_IMG_centerPlayer"
             android:layout_width="0dp"
-            android:layout_height="75dp"
+            android:layout_height="100dp"
             app:srcCompat="@drawable/new_kid"
             android:scaleType="fitCenter"
             android:layout_weight="1"/>
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/game_IMG_rightPlayer"
             android:layout_width="0dp"
-            android:layout_height="75dp"
+            android:layout_height="100dp"
             app:srcCompat="@drawable/new_kid"
             android:scaleType="fitCenter"
             android:layout_weight="1"/>
@@ -145,6 +140,7 @@
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
                 android:layout_weight="1"/>
+
         </LinearLayout>
         <LinearLayout
             android:id="@+id/game_LL_obstacleCol2"
@@ -176,6 +172,8 @@
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
                 android:layout_weight="1"/>
+
+
         </LinearLayout>
         <LinearLayout
             android:id="@+id/game_LL_obstacleCol3"
