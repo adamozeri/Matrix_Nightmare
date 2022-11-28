@@ -136,7 +136,7 @@ public class GameActivity extends AppCompatActivity {
         int col = 0;
         do {
             col = gameManger.randomSpawn(game_LL_obstacleCol.length);
-        }while (diagonalCheck(col) && gameManger.sequenceCheck(col));
+        } while (diagonalCheck(col) && gameManger.sequenceCheck(col));
 
         game_LL_obstacleCol[col].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -147,13 +147,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Checks for potential diagonal traps
      **/
     private boolean diagonalCheck(int col) {
-        for (int i = 0; i < game_LL_obstacleCol[1].getChildCount()-1; i++) {
-            if(game_LL_obstacleCol[1].getChildAt(i).getVisibility() == View.VISIBLE) {
+        for (int i = 0; i < game_LL_obstacleCol[1].getChildCount() - 1; i++) {
+            if (game_LL_obstacleCol[1].getChildAt(i).getVisibility() == View.VISIBLE) {
                 if (col == 0 && game_LL_obstacleCol[game_LL_obstacleCol.length - 1].getChildAt(i + 1).getVisibility() == View.VISIBLE)
                     return true;
                 else if (col == game_LL_obstacleCol.length - 1

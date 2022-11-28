@@ -19,12 +19,13 @@ public class GameManger {
         initLastCols(); // here I store the last 2 random cols
     }
 
-    private void initLastCols(){
+    private void initLastCols() {
         this.lastCols = new int[SEQUENCE_NUM];
         for (int i = 0; i < this.lastCols.length; i++) {
             this.lastCols[i] = -1;
         }
     }
+
     public Boolean isEnded() {
         return player.getLife() > 0;
     }
@@ -45,8 +46,8 @@ public class GameManger {
      **/
     public boolean hit(Vibrator v) {
         if (obstacleCols[player.getCurrentPos()].getChildAt((obstacleCols[player.getCurrentPos()].getChildCount() - 1)).getVisibility() == View.VISIBLE) {
-            v.vibrate(VibrationEffect.createOneShot(500,VibrationEffect.DEFAULT_AMPLITUDE));
-            if(player.getLife() > 0)
+            v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+            if (player.getLife() > 0)
                 player.setLife(player.getLife() - 1);
             return true;
         }
@@ -58,9 +59,9 @@ public class GameManger {
      **/
     public boolean sequenceCheck(int col) {
         for (int i = 0; i < SEQUENCE_NUM; i++) {
-            if(lastCols[i] != col){
-                for (int j = 0; j < SEQUENCE_NUM-1; j++) {
-                    lastCols[j+1] = lastCols[j];
+            if (lastCols[i] != col) {
+                for (int j = 0; j < SEQUENCE_NUM - 1; j++) {
+                    lastCols[j + 1] = lastCols[j];
                 }
                 lastCols[0] = col;
                 return true;
