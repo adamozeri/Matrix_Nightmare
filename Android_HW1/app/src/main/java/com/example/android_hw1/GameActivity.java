@@ -21,7 +21,7 @@ import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
     private Timer timer;
-    private final int DELAY = 750;
+    private final int DELAY = 500;
 
     private ExtendedFloatingActionButton game_FAB_leftArrow;
     private ExtendedFloatingActionButton game_FAB_rightArrow;
@@ -135,8 +135,9 @@ public class GameActivity extends AppCompatActivity {
         }
         int col = 0;
         do {
+            Log.d("check","here");
             col = gameManger.randomSpawn(game_LL_obstacleCol.length);
-        } while (diagonalCheck(col) && gameManger.sequenceCheck(col));
+        } while (diagonalCheck(col) || gameManger.sequenceCheck(col));
 
         game_LL_obstacleCol[col].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

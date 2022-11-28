@@ -64,10 +64,10 @@ public class GameManger {
                     lastCols[j + 1] = lastCols[j];
                 }
                 lastCols[0] = col;
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public int randomSpawn(int num) {
