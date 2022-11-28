@@ -2,15 +2,19 @@ package com.example.android_hw1;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,7 +41,7 @@ public class GameActivity extends AppCompatActivity {
         findViews();
         Glide
                 .with(this)
-                .load("https://img.freepik.com/free-vector/chalkboard-texture_1048-1125.jpg?w=826&t=st=1669559891~exp=1669560491~hmac=fa28ced811066e461dbd16b6075c6c8178fd0077b64ef1f86f8aac74e1bcfa93")
+                .load("https://media.shoesonline.co.il/2020/10/unisex-Palladium-Pampa-Dare-Exchange__76860-008-M-555x555.jpg")
                 .into(game_IMG_background);
         this.gameManger = new GameManger(game_LL_obstacleCol, new Player()
                 .setCurrentPos(game_LL_player.getChildCount() / 2)
@@ -54,10 +58,11 @@ public class GameActivity extends AppCompatActivity {
         game_FAB_rightArrow.setOnClickListener(view -> {
             clicked("right");
         });
-
     }
 
-
+    /**
+     * sets all attributes to the correct view id
+     **/
     private void findViews() {
         this.game_FAB_leftArrow = findViewById(R.id.game_FAB_leftArrow);
         this.game_FAB_rightArrow = findViewById(R.id.game_FAB_rightArrow);
@@ -74,7 +79,6 @@ public class GameActivity extends AppCompatActivity {
         };
         this.game_IMG_background = findViewById(R.id.game_IMG_background);
     }
-
 
     private void clicked(String direction) {
         gameManger.movePlayer(direction);
@@ -107,6 +111,11 @@ public class GameActivity extends AppCompatActivity {
             else
                 game_LL_player.getChildAt(i).setVisibility(View.VISIBLE);
         }
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (gameManger.hit(v)) {
+            toast();
+            removeHeart();
+        }
     }
 
     /**
@@ -124,13 +133,54 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         }
-        game_LL_obstacleCol[gameManger.randomSpawn()].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
-        gameManger.hit();
+        int col = 0;
+        do {
+            col = gameManger.randomSpawn(game_LL_obstacleCol.length);
+        }while (diagonalCheck(col) && gameManger.sequenceCheck(col));
+
+        game_LL_obstacleCol[col].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (gameManger.hit(v)) {
+            toast();
+            removeHeart();
+        }
+    }
+
+
+
+    /**
+     * Checks for potential diagonal traps
+     **/
+    private boolean diagonalCheck(int col) {
+        for (int i = 0; i < game_LL_obstacleCol[1].getChildCount()-1; i++) {
+            if(game_LL_obstacleCol[1].getChildAt(i).getVisibility() == View.VISIBLE) {
+                if (col == 0 && game_LL_obstacleCol[game_LL_obstacleCol.length - 1].getChildAt(i + 1).getVisibility() == View.VISIBLE)
+                    return true;
+                else if (col == game_LL_obstacleCol.length - 1
+                        && game_LL_obstacleCol[0].getChildAt(i + 1).getVisibility() == View.VISIBLE)
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * sets hearts invisible
+     **/
+    private void removeHeart() {
+        if (gameManger.getPlayer().getLife() >= 0)
+            game_IMG_hearts[gameManger.getPlayer().getLife()].setVisibility(View.INVISIBLE);
     }
 
 
     private void refreshUI() {
         playerVisibility();
+    }
+
+    private void toast() {
+        Toast
+                .makeText(this, "Ouch ", Toast.LENGTH_SHORT)
+                .show();
     }
 
     private void startTimer() {
@@ -144,10 +194,5 @@ public class GameActivity extends AppCompatActivity {
             }
         }, DELAY, DELAY);
     }
-
-    private void stopTimer() {
-        timer.cancel();
-    }
-
 
 }

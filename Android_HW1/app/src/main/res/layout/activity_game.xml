@@ -9,7 +9,9 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/game_IMG_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/ic_launcher_background"/>
     <LinearLayout
         android:layout_width="140dp"
         android:layout_height="40dp"
@@ -208,6 +210,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
 
 </RelativeLayout>
