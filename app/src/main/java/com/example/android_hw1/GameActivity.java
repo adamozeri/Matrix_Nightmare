@@ -160,9 +160,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void toast() {
-        Toast
-                .makeText(this, "Ouch ", Toast.LENGTH_SHORT)
-                .show();
+        if (gameManger.getPlayer().getLife() <= 0)
+            Toast
+                    .makeText(this, "Game Over", Toast.LENGTH_SHORT)
+                    .show();
+        else
+            Toast
+                    .makeText(this, "Ouch", Toast.LENGTH_SHORT)
+                    .show();
     }
 
     private void startTimer() {
