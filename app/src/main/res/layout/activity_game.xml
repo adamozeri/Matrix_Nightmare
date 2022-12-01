@@ -10,8 +10,7 @@
         android:id="@+id/game_IMG_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_launcher_background"/>
+        android:scaleType="centerCrop" />
     <LinearLayout
         android:layout_width="140dp"
         android:layout_height="40dp"
@@ -52,29 +51,31 @@
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="85dp">
+        android:layout_marginBottom="115dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/game_IMG_leftPlayer"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            app:srcCompat="@drawable/new_kid"
+            app:srcCompat="@drawable/kid"
             android:scaleType="fitCenter"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:visibility="invisible"/>
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/game_IMG_centerPlayer"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            app:srcCompat="@drawable/new_kid"
+            app:srcCompat="@drawable/kid"
             android:scaleType="fitCenter"
             android:layout_weight="1"/>
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/game_IMG_rightPlayer"
             android:layout_width="0dp"
             android:layout_height="100dp"
-            app:srcCompat="@drawable/new_kid"
+            app:srcCompat="@drawable/kid"
             android:scaleType="fitCenter"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:visibility="invisible"/>
 
     </LinearLayout>
     
@@ -82,27 +83,27 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp">
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/game_FAB_leftArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/arrow"
-            app:iconTint="@color/teal_200"
-            app:backgroundTint="#1B747C"
-            android:rotation="180"
-            app:iconSize="30dp"
-            android:layout_marginStart="100dp"/>
+            app:icon="@drawable/left_arrow"
+            app:iconTint="@color/black"
+            app:backgroundTint="@color/arrow_FAB_color"
+            app:iconSize="40dp"
+            android:layout_marginStart="50dp"/>
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/game_FAB_rightArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            app:icon="@drawable/arrow"
-            app:iconTint="@color/teal_200"
-            app:backgroundTint="#1B747C"
-            app:iconSize="30dp"
-            android:layout_marginEnd="100dp"/>
+            app:icon="@drawable/right_arrow"
+            app:iconTint="@color/black"
+            app:backgroundTint="@color/arrow_FAB_color"
+            app:iconSize="40dp"
+            android:layout_marginEnd="50dp"/>
 
     </RelativeLayout>
 
@@ -123,25 +124,38 @@
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                android:visibility="invisible"
+                app:srcCompat="@drawable/matrix_color" />
+
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
 
         </LinearLayout>
         <LinearLayout
@@ -155,25 +169,36 @@
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:srcCompat="@drawable/matrix_color"
+                android:scaleType="fitCenter"
+                android:layout_weight="1"
+                android:visibility="invisible"/>
 
 
         </LinearLayout>
@@ -188,25 +213,36 @@
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
             <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:srcCompat="@drawable/matrix_color"
                 android:scaleType="fitCenter"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:visibility="invisible"/>
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:srcCompat="@drawable/matrix_color"
+                android:scaleType="fitCenter"
+                android:layout_weight="1"
+                android:visibility="invisible"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -5,16 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,16 +40,15 @@ public class GameActivity extends AppCompatActivity {
         findViews();
         Glide
                 .with(this)
-                .load("https://media.shoesonline.co.il/2020/10/unisex-Palladium-Pampa-Dare-Exchange__76860-008-M-555x555.jpg")
+                .load(R.drawable.background1)
                 .into(game_IMG_background);
         this.gameManger = new GameManger(game_LL_obstacleCol, new Player()
                 .setCurrentPos(game_LL_player.getChildCount() / 2)
                 .setLife(game_IMG_hearts.length)
                 .setMaxIndex(game_LL_player.getChildCount() - 1));
 
-        initGameUI();
         refreshUI();
-        startTimer();
+//        startTimer();
 
         game_FAB_leftArrow.setOnClickListener(view -> {
             clicked("left");
@@ -60,6 +56,18 @@ public class GameActivity extends AppCompatActivity {
         game_FAB_rightArrow.setOnClickListener(view -> {
             clicked("right");
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopTimer();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTimer();
     }
 
     /**
@@ -85,22 +93,6 @@ public class GameActivity extends AppCompatActivity {
     private void clicked(String direction) {
         gameManger.movePlayer(direction);
         refreshUI();
-    }
-
-    private void initGameUI() {
-        initObstacles();
-        playerVisibility();
-    }
-
-    /**
-     * Sets all obstacles to invisible (we use it at the beginning of the game)
-     **/
-    private void initObstacles() {
-        for (int i = 0; i < game_LL_obstacleCol.length; i++) {
-            for (int j = 0; j < game_LL_obstacleCol[i].getChildCount(); j++) {
-                game_LL_obstacleCol[i].getChildAt(j).setVisibility(View.INVISIBLE);
-            }
-        }
     }
 
     /**
@@ -140,33 +132,19 @@ public class GameActivity extends AppCompatActivity {
             toast();
             removeHeart();
         }
-
     }
 
-    public void newObstacle(){
+    /**
+     * creates a new obstacle
+     * calls function to check if there is a sequence of the same column
+     **/
+    public void newObstacle() {
         int col = 0;
         do {
             col = gameManger.randomSpawn(game_LL_obstacleCol.length);
         } while (gameManger.sequenceCheck(col));
-
         game_LL_obstacleCol[col].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
     }
-
-//    /**
-//     * Checks for potential diagonal traps
-//     **/
-//    private boolean diagonalCheck(int col) {
-//        for (int i = 0; i < game_LL_obstacleCol[1].getChildCount() - 1; i++) {
-//            if (game_LL_obstacleCol[1].getChildAt(i).getVisibility() == View.VISIBLE) {
-//                if (col == 0 && game_LL_obstacleCol[game_LL_obstacleCol.length - 1].getChildAt(i + 1).getVisibility() == View.VISIBLE)
-//                    return true;
-//                else if (col == game_LL_obstacleCol.length - 1
-//                        && game_LL_obstacleCol[0].getChildAt(i + 1).getVisibility() == View.VISIBLE)
-//                    return true;
-//            }
-//        }
-//        return false;
-//    }
 
     /**
      * sets hearts invisible
@@ -194,12 +172,16 @@ public class GameActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> {
                     updateObstacles();
-                    if(newObstacleCounter % 2 == 0)
+                    if (newObstacleCounter % 2 == 0)
                         newObstacle();
                     newObstacleCounter++;
                 });
             }
         }, DELAY, DELAY);
+    }
+
+    private void stopTimer(){
+        timer.cancel();
     }
 
 }
