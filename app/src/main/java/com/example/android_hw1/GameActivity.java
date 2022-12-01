@@ -21,7 +21,9 @@ import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
     private Timer timer;
-    private final int DELAY = 500;
+    private final int DELAY = 350;
+
+    private int newObstacleCounter = 0; // every even number new obstacle
 
     private ExtendedFloatingActionButton game_FAB_leftArrow;
     private ExtendedFloatingActionButton game_FAB_rightArrow;
@@ -133,36 +135,38 @@ public class GameActivity extends AppCompatActivity {
                 }
             }
         }
-        int col = 0;
-        do {
-            Log.d("check","here");
-            col = gameManger.randomSpawn(game_LL_obstacleCol.length);
-        } while (diagonalCheck(col) || gameManger.sequenceCheck(col));
-
-        game_LL_obstacleCol[col].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (gameManger.hit(v)) {
             toast();
             removeHeart();
         }
+
     }
 
+    public void newObstacle(){
+        int col = 0;
+        do {
+            col = gameManger.randomSpawn(game_LL_obstacleCol.length);
+        } while (gameManger.sequenceCheck(col));
 
-    /**
-     * Checks for potential diagonal traps
-     **/
-    private boolean diagonalCheck(int col) {
-        for (int i = 0; i < game_LL_obstacleCol[1].getChildCount() - 1; i++) {
-            if (game_LL_obstacleCol[1].getChildAt(i).getVisibility() == View.VISIBLE) {
-                if (col == 0 && game_LL_obstacleCol[game_LL_obstacleCol.length - 1].getChildAt(i + 1).getVisibility() == View.VISIBLE)
-                    return true;
-                else if (col == game_LL_obstacleCol.length - 1
-                        && game_LL_obstacleCol[0].getChildAt(i + 1).getVisibility() == View.VISIBLE)
-                    return true;
-            }
-        }
-        return false;
+        game_LL_obstacleCol[col].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
     }
+
+//    /**
+//     * Checks for potential diagonal traps
+//     **/
+//    private boolean diagonalCheck(int col) {
+//        for (int i = 0; i < game_LL_obstacleCol[1].getChildCount() - 1; i++) {
+//            if (game_LL_obstacleCol[1].getChildAt(i).getVisibility() == View.VISIBLE) {
+//                if (col == 0 && game_LL_obstacleCol[game_LL_obstacleCol.length - 1].getChildAt(i + 1).getVisibility() == View.VISIBLE)
+//                    return true;
+//                else if (col == game_LL_obstacleCol.length - 1
+//                        && game_LL_obstacleCol[0].getChildAt(i + 1).getVisibility() == View.VISIBLE)
+//                    return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /**
      * sets hearts invisible
@@ -190,6 +194,9 @@ public class GameActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> {
                     updateObstacles();
+                    if(newObstacleCounter % 2 == 0)
+                        newObstacle();
+                    newObstacleCounter++;
                 });
             }
         }, DELAY, DELAY);

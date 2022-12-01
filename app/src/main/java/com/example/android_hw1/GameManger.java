@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 public class GameManger {
 
-    private final int SEQUENCE_NUM = 2;
+    private final int SEQUENCE_NUM = 1;
 
     private Player player;
     private LinearLayout[] obstacleCols;
