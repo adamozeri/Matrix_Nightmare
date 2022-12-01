@@ -4,7 +4,7 @@
 
 Help the stressed student dodge the matrix as long as you can!
 This project was made as part of "Mobile Applications" course in my college.
-Created by Adam Ozeri
+Created by Adam Ozeri.
 
 ## Gif
 
