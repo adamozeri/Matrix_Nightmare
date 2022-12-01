@@ -18,7 +18,7 @@ import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
     private Timer timer;
-    private final int DELAY = 350;
+    private final int DELAY = 450;
 
     private int newObstacleCounter = 0; // every even number new obstacle
 
