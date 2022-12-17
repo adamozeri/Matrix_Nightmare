@@ -80,7 +80,9 @@ public class GameActivity extends AppCompatActivity {
         this.game_LL_obstacleCol = new LinearLayout[]{
                 findViewById(R.id.game_LL_obstacleCol1),
                 findViewById(R.id.game_LL_obstacleCol2),
-                findViewById(R.id.game_LL_obstacleCol3)
+                findViewById(R.id.game_LL_obstacleCol3),
+                findViewById(R.id.game_LL_obstacleCol4),
+                findViewById(R.id.game_LL_obstacleCol5)
         };
         this.game_IMG_hearts = new ShapeableImageView[]{
                 findViewById(R.id.game_IMG_heart1),
