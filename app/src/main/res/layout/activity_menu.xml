@@ -7,8 +7,84 @@
     tools:context=".MenuActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/game_IMG_background"
+        android:id="@+id/menu_IMG_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/amatica_sc"
+        android:text="Matrix
+        Nightmare"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="70sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/menu_BTN_play"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Play"
+        android:fontFamily="@font/amatica_sc"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:backgroundTint="@color/buttons"
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/menu_BTN_top10"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/menu_BTN_play"
+        android:layout_centerInParent="true"
+        android:backgroundTint="@color/buttons"
+        android:fontFamily="@font/amatica_sc"
+        android:text="Top Grades"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/menu_SW_sensor"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/menu_BTN_top10"
+        android:layout_centerHorizontal="true"
+        android:text="sensors mode"
+        android:fontFamily="@font/amatica_sc"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/menu_SW_fast"
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/menu_SW_sensor"
+        android:layout_centerHorizontal="true"
+        android:text="fast mode"
+        android:fontFamily="@font/amatica_sc"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        />
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="170dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_SW_fast"
+        android:layout_centerHorizontal="true"
+        android:text="Enter Your Name"
+        android:textAlignment="center"
+        android:textColor="@color/blackOP"/>
+
+
 </RelativeLayout>
