@@ -38,7 +38,6 @@
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:backgroundTint="@color/buttons"
-
         />
 
     <com.google.android.material.button.MaterialButton
