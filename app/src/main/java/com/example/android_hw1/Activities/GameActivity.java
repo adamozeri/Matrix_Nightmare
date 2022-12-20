@@ -1,4 +1,4 @@
-package com.example.android_hw1;
+package com.example.android_hw1.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.android_hw1.GameManger;
+import com.example.android_hw1.Player;
+import com.example.android_hw1.R;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuActivity">
+    tools:context=".Activities.MenuActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/menu_IMG_background"
@@ -31,14 +31,13 @@
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Play"
+        android:backgroundTint="@color/buttons"
         android:fontFamily="@font/amatica_sc"
-        android:textStyle="bold"
-        android:textSize="30sp"
+        android:text="Play"
         android:textAllCaps="false"
         android:textColor="@color/black"
-        android:backgroundTint="@color/buttons"
-        />
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/menu_BTN_top10"

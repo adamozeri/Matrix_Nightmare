@@ -1,14 +1,16 @@
-package com.example.android_hw1;
+package com.example.android_hw1.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class ScoreActivity extends AppCompatActivity {
+import com.example.android_hw1.R;
+
+public class MenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_score);
+        setContentView(R.layout.activity_menu);
     }
 }
