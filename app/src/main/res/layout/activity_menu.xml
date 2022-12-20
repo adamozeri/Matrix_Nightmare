@@ -10,7 +10,9 @@
         android:id="@+id/menu_IMG_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/background"
+        />
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
@@ -40,7 +42,7 @@
         android:textStyle="bold" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/menu_BTN_top10"
+        android:id="@+id/menu_BTN_topGrades"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/menu_BTN_play"
@@ -57,7 +59,7 @@
         android:id="@+id/menu_SW_sensor"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/menu_BTN_top10"
+        android:layout_below="@+id/menu_BTN_topGrades"
         android:layout_centerHorizontal="true"
         android:text="sensors mode"
         android:fontFamily="@font/amatica_sc"
@@ -83,6 +85,5 @@
         android:text="Enter Your Name"
         android:textAlignment="center"
         android:textColor="@color/blackOP"/>
-
 
 </RelativeLayout>
