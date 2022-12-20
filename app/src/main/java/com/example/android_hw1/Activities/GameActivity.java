@@ -3,13 +3,13 @@ package com.example.android_hw1.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.android_hw1.GameManger;
 import com.example.android_hw1.Player;
 import com.example.android_hw1.R;
@@ -20,38 +20,44 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
+    // Intent values
+    public static final String KEY_SPEED = "KEY_SPEED";
+    public static final String KEY_SENSOR = "KEY_SENSOR";
+
+
     private Timer timer;
-    private final int DELAY = 450;
+    private GameManger gameManger;
+
+
+    // game settings
+    private int delay;
+    private boolean isSensor;
 
     private int newObstacleCounter = 0; // every even number new obstacle
 
+    //  view
     private ExtendedFloatingActionButton game_FAB_leftArrow;
     private ExtendedFloatingActionButton game_FAB_rightArrow;
     private LinearLayout[] game_LL_obstacleCol;
     private LinearLayout game_LL_player;
     private ShapeableImageView[] game_IMG_hearts;
-
     private ShapeableImageView game_IMG_background;
 
-    private GameManger gameManger;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        getValuesPreviousIntent();
+
         findViews();
-        Glide
-                .with(this)
-                .load(R.drawable.background1)
-                .into(game_IMG_background);
         this.gameManger = new GameManger(game_LL_obstacleCol, new Player()
                 .setCurrentPos(game_LL_player.getChildCount() / 2)
                 .setLife(game_IMG_hearts.length)
                 .setMaxIndex(game_LL_player.getChildCount() - 1));
 
         refreshUI();
-//        startTimer();
 
         game_FAB_leftArrow.setOnClickListener(view -> {
             clicked("left");
@@ -59,6 +65,16 @@ public class GameActivity extends AppCompatActivity {
         game_FAB_rightArrow.setOnClickListener(view -> {
             clicked("right");
         });
+    }
+
+    private void getValuesPreviousIntent(){
+        Intent previousIntent = getIntent();
+        if (previousIntent.getBooleanExtra(KEY_SPEED,false))
+            delay = 300;
+        else
+            delay = 600;
+
+        previousIntent.getBooleanExtra(KEY_SENSOR,false);
     }
 
     @Override
@@ -187,7 +203,7 @@ public class GameActivity extends AppCompatActivity {
                     newObstacleCounter++;
                 });
             }
-        }, DELAY, DELAY);
+        }, delay, delay);
     }
 
     private void stopTimer(){
