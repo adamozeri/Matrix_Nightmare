@@ -11,7 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.android_hw1.GameManger;
-import com.example.android_hw1.Player;
+import com.example.android_hw1.Sensor.MovementCallback;
+import com.example.android_hw1.Sensor.MovementSensor;
+import com.example.android_hw1.Model.Player;
 import com.example.android_hw1.R;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -27,13 +29,13 @@ public class GameActivity extends AppCompatActivity {
 
     private Timer timer;
     private GameManger gameManger;
-
+    private MovementSensor movementSensor;
 
     // game settings
     private int delay;
     private boolean isSensor;
 
-    private int newObstacleCounter = 0; // every even number new obstacle
+    private int Odometer = 0; // every even number new obstacle
 
     //  view
     private ExtendedFloatingActionButton game_FAB_leftArrow;
@@ -60,10 +62,31 @@ public class GameActivity extends AppCompatActivity {
         refreshUI();
 
         game_FAB_leftArrow.setOnClickListener(view -> {
-            clicked("left");
+            clicked(-1);
         });
         game_FAB_rightArrow.setOnClickListener(view -> {
-            clicked("right");
+            clicked(1);
+        });
+
+        if(isSensor){ // sensor mode
+            initMovementSensor();
+            game_FAB_leftArrow.setVisibility(View.INVISIBLE);
+            game_FAB_rightArrow.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void initMovementSensor() {
+        movementSensor = new MovementSensor(this, new MovementCallback() {
+            @Override
+            public void playerMovement(int direction) {
+                gameManger.movePlayer(direction);
+                refreshUI();
+            }
+
+            @Override
+            public void playerSpeed(int y) {
+
+            }
         });
     }
 
@@ -74,20 +97,23 @@ public class GameActivity extends AppCompatActivity {
         else
             delay = 600;
 
-        previousIntent.getBooleanExtra(KEY_SENSOR,false);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopTimer();
+        isSensor = previousIntent.getBooleanExtra(KEY_SENSOR,false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         startTimer();
+        movementSensor.start();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopTimer();
+        movementSensor.stop();
+    }
+
 
     /**
      * sets all attributes to the correct view id
@@ -111,7 +137,7 @@ public class GameActivity extends AppCompatActivity {
         this.game_IMG_background = findViewById(R.id.game_IMG_background);
     }
 
-    private void clicked(String direction) {
+    private void clicked(int direction) {
         gameManger.movePlayer(direction);
         refreshUI();
     }
@@ -198,9 +224,9 @@ public class GameActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> {
                     updateObstacles();
-                    if (newObstacleCounter % 2 == 0)
+                    if (Odometer % 2 == 0)
                         newObstacle();
-                    newObstacleCounter++;
+                    Odometer++;
                 });
             }
         }, delay, delay);
