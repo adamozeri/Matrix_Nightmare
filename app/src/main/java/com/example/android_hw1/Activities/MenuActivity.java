@@ -18,6 +18,7 @@ public class MenuActivity extends AppCompatActivity {
     private SwitchMaterial  menu_SW_sensor;
     private SwitchMaterial  menu_SW_fast;
 
+
     // mode
     private boolean isFast;
     private boolean isSensorMode;
@@ -27,6 +28,21 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         findViews();
+        switchListener();
+        buttonListener();
+    }
+
+    private void buttonListener(){
+        menu_BTN_play.setOnClickListener(view -> {
+            openGameScreen();
+        });
+
+        menu_BTN_topGrades.setOnClickListener(view -> {
+            openGradesScreen();
+        });
+    }
+
+    private void switchListener(){
         menu_SW_fast.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean fast) {
@@ -39,9 +55,6 @@ public class MenuActivity extends AppCompatActivity {
                 isSensorMode = sensor;
             }
         });
-        menu_BTN_play.setOnClickListener(view -> {
-            openGameScreen();
-        });
     }
 
     private void findViews(){
@@ -51,11 +64,11 @@ public class MenuActivity extends AppCompatActivity {
         menu_SW_fast = findViewById(R.id.menu_SW_fast);
     }
 
-//    private void openGradesScreen(String status, int score) {
-//        Intent scoreIntent = new Intent(this, ScoreActivity.class);
-//        startActivity(scoreIntent);
-//        finish();
-//    }
+    private void openGradesScreen() {
+        Intent scoreIntent = new Intent(this, ScoreActivity.class);
+        startActivity(scoreIntent);
+        finish();
+    }
 
     private void openGameScreen() {
         Intent gameIntent = new Intent(this, GameActivity.class);

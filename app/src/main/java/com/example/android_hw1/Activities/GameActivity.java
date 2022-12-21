@@ -73,6 +73,10 @@ public class GameActivity extends AppCompatActivity {
             game_FAB_leftArrow.setVisibility(View.INVISIBLE);
             game_FAB_rightArrow.setVisibility(View.INVISIBLE);
         }
+        else{
+            game_FAB_leftArrow.setVisibility(View.INVISIBLE);
+            game_FAB_rightArrow.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initMovementSensor() {
@@ -235,5 +239,6 @@ public class GameActivity extends AppCompatActivity {
     private void stopTimer(){
         timer.cancel();
     }
+
 
 }
