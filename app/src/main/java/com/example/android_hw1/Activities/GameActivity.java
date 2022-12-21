@@ -43,7 +43,6 @@ public class GameActivity extends AppCompatActivity {
     private LinearLayout[] game_LL_obstacleCol;
     private LinearLayout game_LL_player;
     private ShapeableImageView[] game_IMG_hearts;
-    private ShapeableImageView game_IMG_background;
 
 
 
@@ -72,10 +71,11 @@ public class GameActivity extends AppCompatActivity {
             initMovementSensor();
             game_FAB_leftArrow.setVisibility(View.INVISIBLE);
             game_FAB_rightArrow.setVisibility(View.INVISIBLE);
+            movementSensor.start();
         }
         else{
-            game_FAB_leftArrow.setVisibility(View.INVISIBLE);
-            game_FAB_rightArrow.setVisibility(View.INVISIBLE);
+            game_FAB_leftArrow.setVisibility(View.VISIBLE);
+            game_FAB_rightArrow.setVisibility(View.VISIBLE);
         }
     }
 
@@ -108,7 +108,6 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startTimer();
-        movementSensor.start();
     }
 
     @Override
@@ -138,7 +137,6 @@ public class GameActivity extends AppCompatActivity {
                 findViewById(R.id.game_IMG_heart2),
                 findViewById(R.id.game_IMG_heart3)
         };
-        this.game_IMG_background = findViewById(R.id.game_IMG_background);
     }
 
     private void clicked(int direction) {
