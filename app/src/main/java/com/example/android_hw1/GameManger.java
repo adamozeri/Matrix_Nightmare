@@ -5,6 +5,8 @@ import android.os.Vibrator;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.android_hw1.Model.Player;
+
 public class GameManger {
 
     private final int SEQUENCE_NUM = 1;
@@ -33,10 +35,10 @@ public class GameManger {
     /**
      * sets player new position
      **/
-    public void movePlayer(String direction) {
-        if (direction == "left" && player.getCurrentPos() > 0)
+    public void movePlayer(int direction) {
+        if (direction == -1 && player.getCurrentPos() > 0)
             player.setCurrentPos(player.getCurrentPos() - 1);
-        else if (direction == "right" && player.getCurrentPos() < player.getMaxIndex())
+        else if (direction == 1 && player.getCurrentPos() < player.getMaxIndex())
             player.setCurrentPos((player.getCurrentPos() + 1));
     }
 
