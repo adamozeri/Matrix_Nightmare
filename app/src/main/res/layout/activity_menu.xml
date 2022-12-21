@@ -30,7 +30,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/menu_BTN_play"
-        android:layout_width="170dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:backgroundTint="@color/buttons"
@@ -43,7 +43,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/menu_BTN_topGrades"
-        android:layout_width="170dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/menu_BTN_play"
         android:layout_centerInParent="true"
@@ -57,24 +57,24 @@
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/menu_SW_sensor"
-        android:layout_width="170dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/menu_BTN_topGrades"
         android:layout_centerHorizontal="true"
         android:text="sensors mode"
         android:fontFamily="@font/amatica_sc"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         />
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/menu_SW_fast"
-        android:layout_width="170dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/menu_SW_sensor"
         android:layout_centerHorizontal="true"
         android:text="fast mode"
         android:fontFamily="@font/amatica_sc"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:textStyle="bold"
         />
     <com.google.android.material.textfield.TextInputEditText
