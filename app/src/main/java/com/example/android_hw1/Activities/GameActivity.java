@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -45,7 +47,6 @@ public class GameActivity extends AppCompatActivity {
     private ShapeableImageView[] game_IMG_hearts;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,13 +68,34 @@ public class GameActivity extends AppCompatActivity {
             clicked(1);
         });
 
-        if(isSensor){ // sensor mode
+        checkSensorMode();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTimer();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopTimer();
+        movementSensor.stop();
+    }
+
+    /**
+     * checks if the sensor switch is on:
+     * true - initiates sensors and start them, sets the arrows to invisible.
+     * false - sets the arrows to visible.
+     **/
+    private void checkSensorMode() {
+        if (isSensor) { // sensor mode
             initMovementSensor();
             game_FAB_leftArrow.setVisibility(View.INVISIBLE);
             game_FAB_rightArrow.setVisibility(View.INVISIBLE);
             movementSensor.start();
-        }
-        else{
+        } else {
             game_FAB_leftArrow.setVisibility(View.VISIBLE);
             game_FAB_rightArrow.setVisibility(View.VISIBLE);
         }
@@ -94,28 +116,17 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    private void getValuesPreviousIntent(){
+    private void getValuesPreviousIntent() {
         Intent previousIntent = getIntent();
-        if (previousIntent.getBooleanExtra(KEY_SPEED,false))
+        if (previousIntent.getBooleanExtra(KEY_SPEED, false))
             delay = 300;
         else
             delay = 600;
 
-        isSensor = previousIntent.getBooleanExtra(KEY_SENSOR,false);
+        isSensor = previousIntent.getBooleanExtra(KEY_SENSOR, false);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        startTimer();
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        stopTimer();
-        movementSensor.stop();
-    }
 
 
     /**
@@ -162,7 +173,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * moves the obstacles on the screen with random spawns
+     * moves the obstacles on the screen with random spawns.
      **/
     public void updateObstacles() {
         int numRows = game_LL_obstacleCol[0].getChildCount() - 1;
@@ -172,6 +183,9 @@ public class GameActivity extends AppCompatActivity {
             for (int j = numRows; j > 0; j--) {
                 if (game_LL_obstacleCol[i].getChildAt(j - 1).getVisibility() == View.VISIBLE) { // Moves the obstacle one spot down
                     game_LL_obstacleCol[i].getChildAt(j - 1).setVisibility(View.INVISIBLE);
+                    int tag = (int)(((ShapeableImageView) game_LL_obstacleCol[i].getChildAt(j-1))).getTag();
+                    ((ShapeableImageView) game_LL_obstacleCol[i].getChildAt(j)).setImageResource(tag); // set the image of the obstacle from above
+                    ((ShapeableImageView) game_LL_obstacleCol[i].getChildAt(j)).setTag(tag);
                     game_LL_obstacleCol[i].getChildAt(j).setVisibility(View.VISIBLE);
                 }
             }
@@ -184,15 +198,30 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * creates a new obstacle
-     * calls function to check if there is a sequence of the same column
+     * creates a new obstacle.
+     * calls sequenceCheck() to check if there is a sequence of the same column.
+     * calls randomObstacleType() to pick an obstacle.
      **/
     public void newObstacle() {
         int col = 0;
         do {
             col = gameManger.randomSpawn(game_LL_obstacleCol.length);
         } while (gameManger.sequenceCheck(col));
+        int currentObstacle = randomObstacleType();
+        ((ShapeableImageView) game_LL_obstacleCol[col].getChildAt(0)).setImageResource(currentObstacle);
+        ((ShapeableImageView) game_LL_obstacleCol[col].getChildAt(0)).setTag(currentObstacle);
         game_LL_obstacleCol[col].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
+    }
+
+    /**
+     * Randomly pick an obstacle type.
+     *
+     * @return image resource as int.
+     */
+    private int randomObstacleType() {
+        if ((int) (Math.random() * 5) == 4)
+            return R.drawable.ic_a;
+        return R.drawable.ic_matrix_color;
     }
 
     /**
@@ -234,7 +263,7 @@ public class GameActivity extends AppCompatActivity {
         }, delay, delay);
     }
 
-    private void stopTimer(){
+    private void stopTimer() {
         timer.cancel();
     }
 
