@@ -101,6 +101,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+
     private void initMovementSensor() {
         movementSensor = new MovementSensor(this, new MovementCallback() {
             @Override
@@ -108,21 +109,21 @@ public class GameActivity extends AppCompatActivity {
                 gameManger.movePlayer(direction);
                 refreshUI();
             }
-
             @Override
             public void playerSpeed(int y) {
-
             }
         });
     }
 
+    /**
+     * getting values from the previous screen
+     */
     private void getValuesPreviousIntent() {
         Intent previousIntent = getIntent();
         if (previousIntent.getBooleanExtra(KEY_SPEED, false))
             delay = 300;
         else
             delay = 600;
-
         isSensor = previousIntent.getBooleanExtra(KEY_SENSOR, false);
     }
 
