@@ -2,16 +2,19 @@ package com.example.android_hw1.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.android_hw1.Fragments.ListFragment;
 import com.example.android_hw1.Fragments.MapFragment;
 import com.example.android_hw1.R;
+import com.google.android.material.button.MaterialButton;
 
 public class ScoreActivity extends AppCompatActivity {
 
     private ListFragment listFragment;
     private MapFragment mapFragment;
+    private MaterialButton score_BTN_menu;
 
 
     @Override
@@ -21,8 +24,23 @@ public class ScoreActivity extends AppCompatActivity {
         listFragment = new ListFragment();
         mapFragment = new MapFragment();
 
+        findViews();
         getSupportFragmentManager().beginTransaction().add(R.id.score_FRAME_list,listFragment).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.score_FRAME_map,mapFragment).commit();
 
+        score_BTN_menu.setOnClickListener(view -> {
+            openMenuScreen();
+        });
+
+    }
+
+    private void openMenuScreen() {
+        Intent menuIntent = new Intent(this, MenuActivity.class);
+        startActivity(menuIntent);
+        finish();
+    }
+
+    private void findViews(){
+        this.score_BTN_menu = findViewById(R.id.score_BTN_Menu);
     }
 }
