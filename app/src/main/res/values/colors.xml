@@ -9,6 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#E3FFF6</color>
     <color name="buttons">#A5CCFB</color>
-    <color name="buttonsOP">#9AA5CCFB</color>
+    <color name="buttonsOP">#4DA5CCFB</color>
     <color name="blackOP">#4B000000</color>
 </resources>
