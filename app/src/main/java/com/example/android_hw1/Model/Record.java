@@ -2,7 +2,7 @@ package com.example.android_hw1.Model;
 
 public class Record {
 
-    private int distance;
+    private int score;
     private double latitude;
     private double longitude;
     private String name;
@@ -11,12 +11,12 @@ public class Record {
     public Record() {
     }
 
-    public int getDistance() {
-        return distance;
+    public int getScore() {
+        return score;
     }
 
-    public Record setDistance(int distance) {
-        this.distance = distance;
+    public Record setScore(int score) {
+        this.score = score;
         return this;
     }
 
@@ -46,4 +46,10 @@ public class Record {
         this.name = name;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "score=" + score + ", name='" + name;
+    }
 }
+
