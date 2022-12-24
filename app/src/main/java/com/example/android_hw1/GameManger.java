@@ -5,6 +5,7 @@ import android.widget.LinearLayout;
 
 import com.example.android_hw1.Model.Player;
 import com.example.android_hw1.Model.Record;
+import com.example.android_hw1.Utils.SignalGenerator;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.Arrays;
@@ -55,11 +56,14 @@ public class GameManger {
     public int hit() {
         ShapeableImageView obstacle = (ShapeableImageView) obstacleCols[player.getCurrentPos()].getChildAt((obstacleCols[player.getCurrentPos()].getChildCount() - 1));
         if (obstacle.getVisibility() == View.VISIBLE && (int) obstacle.getTag() == R.drawable.ic_matrix_color) {
+            SignalGenerator.getInstance().vibrate(500);
+            SignalGenerator.getInstance().toast("Ouch");
             if (player.getLife() > 0)
                 player.setLife(player.getLife() - 1);
             return R.drawable.ic_matrix_color;
         } else if(obstacle.getVisibility() == View.VISIBLE && (int) obstacle.getTag() == R.drawable.ic_a) {
             odometer += 10;
+            SignalGenerator.getInstance().vibrate(100);
             return R.drawable.ic_a;
         }
         return 0;

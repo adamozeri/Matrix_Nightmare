@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 
+import com.example.android_hw1.BackgroundSound;
 import com.example.android_hw1.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -23,6 +24,9 @@ public class MenuActivity extends AppCompatActivity {
     private boolean isFast;
     private boolean isSensorMode;
 
+    //sound
+    private BackgroundSound backgroundSound;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,12 @@ public class MenuActivity extends AppCompatActivity {
         findViews();
         switchListener();
         buttonListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.backgroundSound = new BackgroundSound(this,R.raw.paper_rip_new);
     }
 
     private void buttonListener(){
@@ -67,6 +77,7 @@ public class MenuActivity extends AppCompatActivity {
     private void openGradesScreen() {
         Intent scoreIntent = new Intent(this, ScoreActivity.class);
         startActivity(scoreIntent);
+        backgroundSound.execute();
         finish();
     }
 

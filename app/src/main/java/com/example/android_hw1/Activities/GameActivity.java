@@ -2,18 +2,14 @@ package com.example.android_hw1.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.android_hw1.DataManager;
 import com.example.android_hw1.GameManger;
+import com.example.android_hw1.BackgroundSound;
 import com.example.android_hw1.Model.Record;
 import com.example.android_hw1.Sensor.MovementCallback;
 import com.example.android_hw1.Sensor.MovementSensor;
@@ -48,6 +44,9 @@ public class GameActivity extends AppCompatActivity {
     private ShapeableImageView[] game_IMG_hearts;
     private MaterialTextView game_LBL_score;
 
+    // sound
+    private BackgroundSound matrixSound;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +61,6 @@ public class GameActivity extends AppCompatActivity {
                 .setMaxIndex(game_LL_player.getChildCount() - 1),new Record().setScore(0));
 
         refreshUI();
-
         game_FAB_leftArrow.setOnClickListener(view -> {
             clicked(-1);
         });
@@ -77,6 +75,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         startTimer();
+        this.matrixSound = new BackgroundSound(this,R.raw.wrong_answer_new);
     }
 
     @Override
@@ -192,14 +191,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /**
-     * creates a vibrator and checks if the "bad" obstacle hits the player.
+     * checks if the "bad" obstacle hits the player in order to remove hearts in view
      */
     private void hitCheck(){
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (gameManger.hit() == R.drawable.ic_matrix_color) {
-            v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            toast();
             removeHeart();
+            matrixSound.execute();
         }
     }
 
@@ -255,16 +252,16 @@ public class GameActivity extends AppCompatActivity {
         playerVisibility();
     }
 
-    private void toast() {
-        if (gameManger.getPlayer().getLife() <= 0)
-            Toast
-                    .makeText(this, "Game Over", Toast.LENGTH_SHORT)
-                    .show();
-        else
-            Toast
-                    .makeText(this, "Ouch", Toast.LENGTH_SHORT)
-                    .show();
-    }
+//    private void toast() {
+//        if (gameManger.getPlayer().getLife() <= 0)
+//            Toast
+//                    .makeText(this, "Game Over", Toast.LENGTH_SHORT)
+//                    .show();
+//        else
+//            Toast
+//                    .makeText(this, "Ouch", Toast.LENGTH_SHORT)
+//                    .show();
+//    }
 
     private void startTimer() {
         timer = new Timer();
