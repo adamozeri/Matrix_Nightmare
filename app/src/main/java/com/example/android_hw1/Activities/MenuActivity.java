@@ -10,8 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 
-import com.example.android_hw1.BackgroundSound;
-import com.example.android_hw1.DataManager;
+import com.example.android_hw1.Utils.BackgroundSound;
 import com.example.android_hw1.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;

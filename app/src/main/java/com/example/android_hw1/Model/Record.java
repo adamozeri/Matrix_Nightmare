@@ -49,7 +49,7 @@ public class Record {
 
     @Override
     public String toString() {
-        return name +" " + score;
+        return name +"  -  " + score;
     }
 }
 

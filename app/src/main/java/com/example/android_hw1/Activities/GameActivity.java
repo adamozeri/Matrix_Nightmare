@@ -12,7 +12,7 @@ import android.widget.PopupWindow;
 
 import com.example.android_hw1.DataManager;
 import com.example.android_hw1.GameManger;
-import com.example.android_hw1.BackgroundSound;
+import com.example.android_hw1.Utils.BackgroundSound;
 import com.example.android_hw1.Model.Record;
 import com.example.android_hw1.Interfaces.MovementCallback;
 import com.example.android_hw1.Sensor.MovementSensor;
@@ -54,6 +54,7 @@ public class GameActivity extends AppCompatActivity {
 
     // sound
     private BackgroundSound matrixSound;
+    private int previousHit = 0;
 
 
     @Override
@@ -177,7 +178,6 @@ public class GameActivity extends AppCompatActivity {
             else
                 game_LL_player.getChildAt(i).setVisibility(View.VISIBLE);
         }
-        hitCheck();
     }
 
     /**
@@ -253,6 +253,8 @@ public class GameActivity extends AppCompatActivity {
      */
     private void gameOver() {
         stopTimer();
+        if (isSensor)
+            movementSensor.stop();
         gameManger.updateScore(gameManger.getOdometer());
         initNamePopup();
     }
@@ -314,7 +316,8 @@ public class GameActivity extends AppCompatActivity {
                     if (gameManger.getOdometer() % 2 == 0)
                         newObstacle();
                     gameManger.setOdometer(gameManger.getOdometer() + 1);
-                    game_LBL_score.setText("" + gameManger.getOdometer());
+                    if(gameManger.getPlayer().getLife() > 0)
+                        game_LBL_score.setText("" + gameManger.getOdometer());
                 });
             }
         }, delay, delay);

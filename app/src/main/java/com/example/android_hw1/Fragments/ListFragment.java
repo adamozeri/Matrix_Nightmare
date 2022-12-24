@@ -44,7 +44,7 @@ public class ListFragment extends Fragment {
 
     private void initListView() {
         if(DataManager.getInstance().getTopRecords() != null){
-            ArrayAdapter<Record> adapter = new ArrayAdapter<Record>(getActivity(), android.R.layout.simple_expandable_list_item_1, DataManager.getInstance().getTopRecords());
+            ArrayAdapter<Record> adapter = new ArrayAdapter<Record>(getActivity(), R.layout.item_list, DataManager.getInstance().getTopRecords());
             list_LV.setAdapter(adapter);
         }
     }
