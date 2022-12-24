@@ -8,5 +8,5 @@ Created by Adam Ozeri.
 
 ## Gif
 
-<img src="https://user-images.githubusercontent.com/80855756/209449128-8b145728-60d3-473f-acbc-535a110ddb4c.png" height="700" />
+<img src="https://user-images.githubusercontent.com/80855756/209449192-74732aaa-0a8d-42a7-9734-267ec5b442d0.gif" height="700" />
 
