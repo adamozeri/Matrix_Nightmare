@@ -77,13 +77,5 @@
         android:textSize="24sp"
         android:textStyle="bold"
         />
-    <com.google.android.material.textfield.TextInputEditText
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/menu_SW_fast"
-        android:layout_centerHorizontal="true"
-        android:text="Enter Your Name"
-        android:textAlignment="center"
-        android:textColor="@color/blackOP"/>
 
 </RelativeLayout>

@@ -17,7 +17,7 @@ public class BackgroundSound extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         MediaPlayer player = MediaPlayer.create(this.context, sound);
-        player.setVolume(1.0f, 1.0f);
+        player.setVolume(0.2f, 0.2f);
         player.start();
         return null;
     }

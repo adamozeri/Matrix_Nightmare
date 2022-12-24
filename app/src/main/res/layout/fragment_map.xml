@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="15dp"
-    tools:context=".Activities.ScoreActivity">
+    tools:context=".Fragments.MapFragment">
 
     <fragment
         android:id="@+id/maps"

@@ -1,4 +1,4 @@
-package com.example.android_hw1.Sensor;
+package com.example.android_hw1.Interfaces;
 
 public interface MovementCallback {
     void playerMovement(int direction);

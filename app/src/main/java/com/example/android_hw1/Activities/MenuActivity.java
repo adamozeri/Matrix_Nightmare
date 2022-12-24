@@ -1,17 +1,26 @@
 package com.example.android_hw1.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.CompoundButton;
 
 import com.example.android_hw1.BackgroundSound;
+import com.example.android_hw1.DataManager;
 import com.example.android_hw1.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
+import im.delight.android.location.SimpleLocation;
+
 public class MenuActivity extends AppCompatActivity {
+
+    private SimpleLocation simpleLocation;
 
     // view
     private MaterialButton menu_BTN_play;
@@ -25,12 +34,17 @@ public class MenuActivity extends AppCompatActivity {
     private boolean isSensorMode;
 
     //sound
-    private BackgroundSound backgroundSound;
+    private BackgroundSound scoreSound;
+    private BackgroundSound gameStartSound;
+    private double latitude;
+    private double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        this.simpleLocation = new SimpleLocation(this);
+        locationPermission(simpleLocation);
         findViews();
         switchListener();
         buttonListener();
@@ -39,7 +53,6 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        this.backgroundSound = new BackgroundSound(this,R.raw.paper_rip_new);
     }
 
     private void buttonListener(){
@@ -77,7 +90,8 @@ public class MenuActivity extends AppCompatActivity {
     private void openGradesScreen() {
         Intent scoreIntent = new Intent(this, ScoreActivity.class);
         startActivity(scoreIntent);
-        backgroundSound.execute();
+        this.scoreSound = new BackgroundSound(this,R.raw.paper_rip_new);
+        scoreSound.execute();
         finish();
     }
 
@@ -85,7 +99,26 @@ public class MenuActivity extends AppCompatActivity {
         Intent gameIntent = new Intent(this, GameActivity.class);
         gameIntent.putExtra(GameActivity.KEY_SENSOR, isSensorMode);
         gameIntent.putExtra(GameActivity.KEY_SPEED, isFast);
+        gameIntent.putExtra(GameActivity.KEY_LATITUDE,latitude);
+        gameIntent.putExtra(GameActivity.KEY_LONGITUDE,longitude);
         startActivity(gameIntent);
+        this.gameStartSound = new BackgroundSound(this,R.raw.school_bell);
+        this.gameStartSound.execute();
         finish();
     }
+
+    private void locationPermission(SimpleLocation location) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+        }
+        putLatLon(location);
+    }
+
+    private void putLatLon(SimpleLocation location){
+        location.beginUpdates();
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+    }
+
 }

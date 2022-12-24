@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.GameActivity">
+    tools:context=".Activities.GameActivity"
+    android:id="@+id/activity_game">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/game_IMG_background"

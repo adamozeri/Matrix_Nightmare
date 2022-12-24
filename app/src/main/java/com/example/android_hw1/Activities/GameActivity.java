@@ -4,19 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.example.android_hw1.DataManager;
 import com.example.android_hw1.GameManger;
 import com.example.android_hw1.BackgroundSound;
 import com.example.android_hw1.Model.Record;
-import com.example.android_hw1.Sensor.MovementCallback;
+import com.example.android_hw1.Interfaces.MovementCallback;
 import com.example.android_hw1.Sensor.MovementSensor;
 import com.example.android_hw1.Model.Player;
 import com.example.android_hw1.R;
+import com.example.android_hw1.Utils.SignalGenerator;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Timer;
@@ -26,6 +32,8 @@ public class GameActivity extends AppCompatActivity {
     // Intent values
     public static final String KEY_SPEED = "KEY_SPEED";
     public static final String KEY_SENSOR = "KEY_SENSOR";
+    public static final String KEY_LONGITUDE = "KEY_LONGITUDE";
+    public static final String KEY_LATITUDE = "KEY_LATITUDE";
 
 
     private Timer timer;
@@ -52,14 +60,14 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        getValuesPreviousIntent();
+
 
         findViews();
         this.gameManger = new GameManger(game_LL_obstacleCol, new Player()
                 .setCurrentPos(game_LL_player.getChildCount() / 2)
                 .setLife(game_IMG_hearts.length)
-                .setMaxIndex(game_LL_player.getChildCount() - 1),new Record().setScore(0));
-
+                .setMaxIndex(game_LL_player.getChildCount() - 1), new Record().setScore(0));
+        getValuesPreviousIntent();
         refreshUI();
         game_FAB_leftArrow.setOnClickListener(view -> {
             clicked(-1);
@@ -74,15 +82,15 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        startTimer();
-        this.matrixSound = new BackgroundSound(this,R.raw.wrong_answer_new);
+        if(gameManger.getPlayer().getLife() > 0)
+            startTimer();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         stopTimer();
-        if(isSensor)
+        if (isSensor)
             movementSensor.stop();
     }
 
@@ -111,6 +119,7 @@ public class GameActivity extends AppCompatActivity {
                 gameManger.movePlayer(direction);
                 refreshUI();
             }
+
             @Override
             public void playerSpeed(int y) {
             }
@@ -127,6 +136,8 @@ public class GameActivity extends AppCompatActivity {
         else
             delay = 600;
         isSensor = previousIntent.getBooleanExtra(KEY_SENSOR, false);
+        gameManger.getRecord().setLatitude(previousIntent.getDoubleExtra(KEY_LATITUDE,31.0));
+        gameManger.getRecord().setLongitude(previousIntent.getDoubleExtra(KEY_LONGITUDE,31.0));
     }
 
     /**
@@ -180,7 +191,7 @@ public class GameActivity extends AppCompatActivity {
             for (int j = numRows; j > 0; j--) {
                 if (game_LL_obstacleCol[i].getChildAt(j - 1).getVisibility() == View.VISIBLE) { // Moves the obstacle one spot down
                     game_LL_obstacleCol[i].getChildAt(j - 1).setVisibility(View.INVISIBLE);
-                    int tag = (int) game_LL_obstacleCol[i].getChildAt(j-1).getTag();
+                    int tag = (int) game_LL_obstacleCol[i].getChildAt(j - 1).getTag();
                     ((ShapeableImageView) game_LL_obstacleCol[i].getChildAt(j)).setImageResource(tag); // set the image of the obstacle from above
                     game_LL_obstacleCol[i].getChildAt(j).setTag(tag);
                     game_LL_obstacleCol[i].getChildAt(j).setVisibility(View.VISIBLE);
@@ -193,9 +204,10 @@ public class GameActivity extends AppCompatActivity {
     /**
      * checks if the "bad" obstacle hits the player in order to remove hearts in view
      */
-    private void hitCheck(){
+    private void hitCheck() {
         if (gameManger.hit() == R.drawable.ic_matrix_color) {
             removeHeart();
+            this.matrixSound = new BackgroundSound(this, R.raw.wrong_answer_new);
             matrixSound.execute();
         }
     }
@@ -231,9 +243,8 @@ public class GameActivity extends AppCompatActivity {
      * sets hearts invisible
      **/
     private void removeHeart() {
-        if (gameManger.getPlayer().getLife() > 0)
-            game_IMG_hearts[gameManger.getPlayer().getLife()].setVisibility(View.INVISIBLE);
-        else
+        game_IMG_hearts[gameManger.getPlayer().getLife()].setVisibility(View.INVISIBLE);
+        if (gameManger.getPlayer().getLife() == 0)
             gameOver();
     }
 
@@ -241,7 +252,48 @@ public class GameActivity extends AppCompatActivity {
      * updates the score for the new record and changes to the top grades activity.
      */
     private void gameOver() {
+        stopTimer();
         gameManger.updateScore(gameManger.getOdometer());
+        initNamePopup();
+    }
+
+    private void initNamePopup() {
+        // inflate the layout of the popup window
+        LayoutInflater inflater = (LayoutInflater)
+                getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_name, null);
+
+        // create the popup window
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = true; // lets taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // show the popup window
+        popupWindow.showAtLocation(findViewById(R.id.activity_game), Gravity.CENTER, 0, 0);
+
+        MaterialButton popup_BTN_submit = popupView.findViewById(R.id.popup_BTN_submit);
+        MaterialTextView popup_LBL_score = popupView.findViewById(R.id.popup_LBL_score);
+        TextInputEditText popup_ET_name = popupView.findViewById(R.id.popup_ET_name);
+
+        popup_LBL_score.setText("Score "+gameManger.getOdometer());
+
+        popup_BTN_submit.setOnClickListener(view -> popupClicked(popup_ET_name,popupWindow));
+
+    }
+
+    private void popupClicked(TextInputEditText popup_ET_name, PopupWindow popupWindow){
+        if(popup_ET_name.length() == 0){
+            SignalGenerator.getInstance().toast("Please enter a name");
+        }
+        else{
+            gameManger.getRecord().setName(popup_ET_name.getText().toString());
+            popupWindow.dismiss();
+            openGradesScreen();
+        }
+    }
+
+    private void openGradesScreen() {
         DataManager.getInstance().addRecord(gameManger.getRecord());
         Intent scoreIntent = new Intent(this, ScoreActivity.class);
         startActivity(scoreIntent);
@@ -251,17 +303,6 @@ public class GameActivity extends AppCompatActivity {
     private void refreshUI() {
         playerVisibility();
     }
-
-//    private void toast() {
-//        if (gameManger.getPlayer().getLife() <= 0)
-//            Toast
-//                    .makeText(this, "Game Over", Toast.LENGTH_SHORT)
-//                    .show();
-//        else
-//            Toast
-//                    .makeText(this, "Ouch", Toast.LENGTH_SHORT)
-//                    .show();
-//    }
 
     private void startTimer() {
         timer = new Timer();
@@ -273,7 +314,7 @@ public class GameActivity extends AppCompatActivity {
                     if (gameManger.getOdometer() % 2 == 0)
                         newObstacle();
                     gameManger.setOdometer(gameManger.getOdometer() + 1);
-                    game_LBL_score.setText(""+gameManger.getOdometer());
+                    game_LBL_score.setText("" + gameManger.getOdometer());
                 });
             }
         }, delay, delay);

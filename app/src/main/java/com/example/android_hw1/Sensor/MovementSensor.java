@@ -6,6 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import com.example.android_hw1.Interfaces.MovementCallback;
+
 public class MovementSensor {
 
     // sensor vars

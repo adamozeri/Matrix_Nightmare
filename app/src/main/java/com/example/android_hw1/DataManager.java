@@ -1,9 +1,13 @@
 package com.example.android_hw1;
 
+import android.util.Log;
+
 import com.example.android_hw1.Model.Record;
 import com.example.android_hw1.Utils.MySP;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class DataManager {
@@ -31,27 +35,24 @@ public class DataManager {
         return topRecords;
     }
 
-    public boolean addRecord(Record newRecord){
+    public void addRecord(Record newRecord){
         if(topRecords.size() < MAX_RECORDS) {
             topRecords.add(newRecord);
             saveData();
-            return true;
         }
         Record bottomRecord = topRecords.get(topRecords.size()-1);
         if (bottomRecord.getScore() < newRecord.getScore()){
             topRecords.remove(bottomRecord);
             topRecords.add(newRecord);
             saveData();
-            return true;
         }
-        return false;
+        topRecords.sort((r1, r2) -> r2.getScore() - r1.getScore());
     }
 
     public ArrayList<Record> loadData() {
+        Type typeMyType = new TypeToken<ArrayList<Record>>(){}.getType();
         String recordsJson = MySP.getInstance().getString(SP_RECORDS, "");
-        ArrayList<Record> topRecords = new Gson().fromJson(recordsJson, ArrayList.class);
-        if(topRecords != null)
-            topRecords.sort((r1, r2) -> r2.getScore() - r1.getScore());
+        ArrayList<Record> topRecords = new Gson().fromJson(recordsJson, typeMyType);
         return topRecords;
     }
 
@@ -59,4 +60,5 @@ public class DataManager {
         String recordsJson = new Gson().toJson(topRecords);
         MySP.getInstance().putString(SP_RECORDS, recordsJson);
     }
+
 }
