@@ -4,21 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.android_hw1.DataManager;
 import com.example.android_hw1.GameManger;
+import com.example.android_hw1.Model.Record;
 import com.example.android_hw1.Sensor.MovementCallback;
 import com.example.android_hw1.Sensor.MovementSensor;
 import com.example.android_hw1.Model.Player;
 import com.example.android_hw1.R;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,14 +40,13 @@ public class GameActivity extends AppCompatActivity {
     private int delay;
     private boolean isSensor;
 
-    private int Odometer = 0; // every even number new obstacle
-
     //  view
     private ExtendedFloatingActionButton game_FAB_leftArrow;
     private ExtendedFloatingActionButton game_FAB_rightArrow;
     private LinearLayout[] game_LL_obstacleCol;
     private LinearLayout game_LL_player;
     private ShapeableImageView[] game_IMG_hearts;
+    private MaterialTextView game_LBL_score;
 
 
     @Override
@@ -57,7 +59,7 @@ public class GameActivity extends AppCompatActivity {
         this.gameManger = new GameManger(game_LL_obstacleCol, new Player()
                 .setCurrentPos(game_LL_player.getChildCount() / 2)
                 .setLife(game_IMG_hearts.length)
-                .setMaxIndex(game_LL_player.getChildCount() - 1));
+                .setMaxIndex(game_LL_player.getChildCount() - 1),new Record().setScore(0));
 
         refreshUI();
 
@@ -81,7 +83,8 @@ public class GameActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         stopTimer();
-        movementSensor.stop();
+        if(isSensor)
+            movementSensor.stop();
     }
 
     /**
@@ -127,9 +130,6 @@ public class GameActivity extends AppCompatActivity {
         isSensor = previousIntent.getBooleanExtra(KEY_SENSOR, false);
     }
 
-
-
-
     /**
      * sets all attributes to the correct view id
      **/
@@ -137,6 +137,7 @@ public class GameActivity extends AppCompatActivity {
         this.game_FAB_leftArrow = findViewById(R.id.game_FAB_leftArrow);
         this.game_FAB_rightArrow = findViewById(R.id.game_FAB_rightArrow);
         this.game_LL_player = findViewById(R.id.game_LL_player);
+        this.game_LBL_score = findViewById(R.id.game_LBL_score);
         this.game_LL_obstacleCol = new LinearLayout[]{
                 findViewById(R.id.game_LL_obstacleCol1),
                 findViewById(R.id.game_LL_obstacleCol2),
@@ -166,11 +167,7 @@ public class GameActivity extends AppCompatActivity {
             else
                 game_LL_player.getChildAt(i).setVisibility(View.VISIBLE);
         }
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        if (gameManger.hit(v)) {
-            toast();
-            removeHeart();
-        }
+        hitCheck();
     }
 
     /**
@@ -184,15 +181,23 @@ public class GameActivity extends AppCompatActivity {
             for (int j = numRows; j > 0; j--) {
                 if (game_LL_obstacleCol[i].getChildAt(j - 1).getVisibility() == View.VISIBLE) { // Moves the obstacle one spot down
                     game_LL_obstacleCol[i].getChildAt(j - 1).setVisibility(View.INVISIBLE);
-                    int tag = (int)(((ShapeableImageView) game_LL_obstacleCol[i].getChildAt(j-1))).getTag();
+                    int tag = (int) game_LL_obstacleCol[i].getChildAt(j-1).getTag();
                     ((ShapeableImageView) game_LL_obstacleCol[i].getChildAt(j)).setImageResource(tag); // set the image of the obstacle from above
-                    ((ShapeableImageView) game_LL_obstacleCol[i].getChildAt(j)).setTag(tag);
+                    game_LL_obstacleCol[i].getChildAt(j).setTag(tag);
                     game_LL_obstacleCol[i].getChildAt(j).setVisibility(View.VISIBLE);
                 }
             }
         }
+        hitCheck();
+    }
+
+    /**
+     * creates a vibrator and checks if the "bad" obstacle hits the player.
+     */
+    private void hitCheck(){
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        if (gameManger.hit(v)) {
+        if (gameManger.hit() == R.drawable.ic_matrix_color) {
+            v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
             toast();
             removeHeart();
         }
@@ -206,11 +211,11 @@ public class GameActivity extends AppCompatActivity {
     public void newObstacle() {
         int col = 0;
         do {
-            col = gameManger.randomSpawn(game_LL_obstacleCol.length);
+            col = gameManger.randomNumber(game_LL_obstacleCol.length);
         } while (gameManger.sequenceCheck(col));
         int currentObstacle = randomObstacleType();
         ((ShapeableImageView) game_LL_obstacleCol[col].getChildAt(0)).setImageResource(currentObstacle);
-        ((ShapeableImageView) game_LL_obstacleCol[col].getChildAt(0)).setTag(currentObstacle);
+        game_LL_obstacleCol[col].getChildAt(0).setTag(currentObstacle);
         game_LL_obstacleCol[col].getChildAt(0).setVisibility(View.VISIBLE); // setting a new obstacle in the first row
     }
 
@@ -220,7 +225,7 @@ public class GameActivity extends AppCompatActivity {
      * @return image resource as int.
      */
     private int randomObstacleType() {
-        if ((int) (Math.random() * 5) == 4)
+        if (gameManger.randomNumber(5) == 4)
             return R.drawable.ic_a;
         return R.drawable.ic_matrix_color;
     }
@@ -229,10 +234,22 @@ public class GameActivity extends AppCompatActivity {
      * sets hearts invisible
      **/
     private void removeHeart() {
-        if (gameManger.getPlayer().getLife() >= 0)
+        if (gameManger.getPlayer().getLife() > 0)
             game_IMG_hearts[gameManger.getPlayer().getLife()].setVisibility(View.INVISIBLE);
+        else
+            gameOver();
     }
 
+    /**
+     * updates the score for the new record and changes to the top grades activity.
+     */
+    private void gameOver() {
+        gameManger.updateScore(gameManger.getOdometer());
+        DataManager.getInstance().addRecord(gameManger.getRecord());
+        Intent scoreIntent = new Intent(this, ScoreActivity.class);
+        startActivity(scoreIntent);
+        finish();
+    }
 
     private void refreshUI() {
         playerVisibility();
@@ -256,9 +273,10 @@ public class GameActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> {
                     updateObstacles();
-                    if (Odometer % 2 == 0)
+                    if (gameManger.getOdometer() % 2 == 0)
                         newObstacle();
-                    Odometer++;
+                    gameManger.setOdometer(gameManger.getOdometer() + 1);
+                    game_LBL_score.setText(""+gameManger.getOdometer());
                 });
             }
         }, delay, delay);
